@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Ghi Chú Lời Cảm Tạ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Permanent Marker, Caveat, Gochi Hand, Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Gochi+Hand&family=Inter:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f5f0;
+            background-image: radial-gradient(#222 1.2px, transparent 1.2px);
+            background-size: 20px 20px;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        .font-handwriting {
+            font-family: 'Caveat', cursive;
+        }
+
+        .font-title {
+            font-family: 'Permanent Marker', cursive;
+        }
+
+        .font-doodle {
+            font-family: 'Gochi Hand', cursive;
+        }
+
+        /* Doodle / Hand-drawn Style Rules */
+        .doodle-box {
+            border: 3px solid #1a1a1a;
+            box-shadow: 5px 5px 0px #1a1a1a;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .doodle-btn {
+            border: 3px solid #1a1a1a;
+            box-shadow: 4px 4px 0px #1a1a1a;
+            transition: all 0.15s ease;
+        }
+
+        .doodle-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #1a1a1a;
+        }
+
+        .doodle-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #1a1a1a;
+        }
+
+        .doodle-input {
+            border: 2px solid #1a1a1a;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.15);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .doodle-input:focus {
+            border-color: #000;
+            box-shadow: 4px 4px 0px #1a1a1a;
+        }
+
+        /* Notebook Spiral Binding */
+        .spiral-notebook {
+            position: relative;
+            padding-top: 30px;
+        }
+
+        .spiral-holes {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 20;
+        }
+
+        .spiral-ring {
+            width: 14px;
+            height: 32px;
+            background: linear-gradient(135deg, #444, #111, #666);
+            border-radius: 8px;
+            border: 2px solid #000;
+            box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+        }
+
+        /* Tab Buttons Active Style */
+        .tab-active {
+            background-color: #1a1a1a !important;
+            color: #ffffff !important;
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px #666 !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1a1a1a;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex flex-col items-center">
+
+    <!-- Header & Navigation Tabs -->
+    <header class="w-full max-w-4xl mb-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-wide mb-6 font-title text-gray-900 drop-shadow">
+            ✨ BẢNG GHI CHÚ LỜI CẢM TẠ ✨
+        </h1>
+        
+        <!-- Tab Navigation -->
+        <div class="flex justify-center gap-4 md:gap-6">
+            <button id="tab1Btn" onclick="switchTab('tab1')" 
+                class="doodle-btn px-6 py-3 font-bold text-lg rounded-xl bg-white text-gray-900 cursor-pointer tab-active">
+                ✏️ Tab 1: Nhập Văn Bản
+            </button>
+            <button id="tab2Btn" onclick="switchTab('tab2')" 
+                class="doodle-btn px-6 py-3 font-bold text-lg rounded-xl bg-white text-gray-900 cursor-pointer">
+                📌 Tab 2: Xem Bảng Ghi Chú (<span id="noteCount">0</span>)
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="w-full max-w-4xl">
+
+        <!-- ================= TAB 1: FORM NHẬP VĂN BẢN ================= -->
+        <section id="tab1" class="block">
+            <div class="relative mx-auto max-w-2xl mt-6">
+                <!-- Sổ Tay Lò Xo -->
+                <div class="spiral-holes">
+                    <div class="spiral-ring"></div>
+                    <div class="spiral-ring"></div>
+                    <div class="spiral-ring"></div>
+                    <div class="spiral-ring"></div>
+                    <div class="spiral-ring"></div>
+                    <div class="spiral-ring"></div>
+                    <div class="spiral-ring"></div>
+                    <div class="spiral-ring"></div>
+                    <div class="spiral-ring"></div>
+                    <div class="spiral-ring"></div>
+                </div>
+
+                <div class="doodle-box spiral-notebook bg-white p-6 md:p-10 relative">
+                    <div class="border-b-2 border-dashed border-gray-300 pb-3 mb-6 flex justify-between items-center">
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Trang Ghi Chú Mới #NEW</span>
+                        <span class="text-sm font-semibold text-gray-400 font-doodle">Trang trí kiểu Handmade 🎨</span>
+                    </div>
+
+                    <form id="noteForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
+                        <!-- Ô 1: Chủ đề -->
+                        <div>
+                            <label class="block text-sm font-bold text-gray-800 mb-1 uppercase tracking-wide">
+                                1. Chủ đề (Tiêu đề ghi chú) <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="inputTopic" required placeholder="Ví dụ: Lời Cảm Ơn Thầy Cô, Tri Ân Cha Mẹ..." 
+                                class="doodle-input w-full p-3 rounded-lg text-gray-800 font-semibold text-base bg-yellow-50 focus:bg-white">
+                        </div>
+
+                        <!-- Ô 2: Thông tin -->
+                        <div>
+                            <label class="block text-sm font-bold text-gray-800 mb-1 uppercase tracking-wide">
+                                2. Thông tin (Người gửi / Thời gian / Lớp) <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="inputInfo" required placeholder="Ví dụ: Gia Huy - 12A12 | Ngày 20/11/2026" 
+                                class="doodle-input w-full p-3 rounded-lg text-gray-800 text-base bg-blue-50 focus:bg-white">
+                        </div>
+
+                        <!-- Ô 3: Câu mở rộng -->
+                        <div>
+                            <label class="block text-sm font-bold text-gray-800 mb-1 uppercase tracking-wide">
+                                3. Câu mở rộng (Nội dung chi tiết lời cảm tạ) <span class="text-red-500">*</span>
+                            </label>
+                            <textarea id="inputContent" required rows="5" placeholder="Nhập suy nghĩ, tình cảm và lời tri ân sâu sắc nhất của bạn vào đây..." 
+                                class="doodle-input w-full p-3 rounded-lg text-gray-800 text-base bg-green-50 focus:bg-white font-handwriting text-2xl leading-relaxed"></textarea>
+                        </div>
+
+                        <!-- Button Đăng Lên Bảng -->
+                        <div class="pt-4 text-center">
+                            <button type="submit" 
+                                class="doodle-btn w-full md:w-auto px-10 py-4 bg-black text-white font-bold text-xl rounded-xl cursor-pointer hover:bg-gray-800">
+                                🚀 Đăng Lên Bảng Trưng Bày
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: BẢNG TRƯNG BÀY ================= -->
+        <section id="tab2" class="hidden">
+            <!-- Khung Bảng Trưng Bày -->
+            <div class="doodle-box bg-amber-50/80 p-6 md:p-8 min-h-[500px] relative rounded-2xl border-4">
+                
+                <!-- Tiêu đề Lớn Giữa Bảng -->
+                <div class="text-center mb-10 pb-4 border-b-2 border-black/20">
+                    <h2 class="text-5xl md:text-6xl font-extrabold text-amber-950 font-handwriting drop-shadow-sm inline-block px-6 py-2 bg-yellow-200/60 rounded-full border-2 border-black/80">
+                        💌 Lời Cảm Tạ 💌
+                    </h2>
+                    <p class="text-gray-600 font-doodle text-lg mt-2">Bấm vào từng ghi chú để đọc trọn vẹn câu chuyện!</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyMessage" class="hidden text-center py-16">
+                    <p class="text-2xl font-doodle text-gray-500 mb-4">Chưa có lời cảm tạ nào được dán lên bảng...</p>
+                    <button onclick="switchTab('tab1')" class="doodle-btn px-6 py-2 bg-black text-white font-bold rounded-lg">
+                        + Tạo Ghi Chú Đầu Tiên
+                    </button>
+                </div>
+
+                <!-- Grid hiển thị danh sách Ghi Chú -->
+                <div id="notesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+                    <!-- Dynamic Notes will be rendered here -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= POPUP / MODAL CHI TIẾT GHI CHÚ ================= -->
+    <div id="noteModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="doodle-box bg-white w-full max-w-lg p-6 md:p-8 relative rounded-2xl animate-fade-in my-auto">
+            <!-- Nút đóng -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 border-2 border-black rounded-full font-bold text-xl hover:bg-red-500 hover:text-white transition-colors">
+                ✕
+            </button>
+
+            <!-- Tiêu đề modal -->
+            <div class="mb-4 pr-8">
+                <span id="modalTypeBadge" class="text-xs font-bold px-3 py-1 bg-yellow-300 border border-black rounded-full uppercase">
+                    Chi tiết Lời Cảm Tạ
+                </span>
+                <h3 id="modalTopic" class="text-2xl font-extrabold text-gray-900 mt-2 leading-tight"></h3>
+            </div>
+
+            <!-- Thông tin người gửi -->
+            <div id="modalInfo" class="text-sm font-semibold text-gray-600 bg-gray-100 p-2.5 rounded-lg border border-gray-300 mb-5 font-mono">
+            </div>
+
+            <!-- Câu mở rộng (Nội dung) -->
+            <div class="border-t-2 border-black/10 pt-4 mb-6">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Nội dung chi tiết:</label>
+                <div id="modalContent" class="font-handwriting text-3xl text-gray-800 leading-relaxed whitespace-pre-wrap max-h-[300px] overflow-y-auto pr-2">
+                </div>
+            </div>
+
+            <!-- Action footer -->
+            <div class="flex justify-end gap-3 pt-2 border-t border-gray-200">
+                <button onclick="closeModal()" class="doodle-btn px-5 py-2 bg-gray-200 font-bold rounded-lg hover:bg-gray-300">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Storage Key
+        const STORAGE_KEY = 'thanks_notes_db';
+
+        // Local Storage Helper
+        function getStoredNotes() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function saveNotes(notes) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+            updateNoteCount();
+        }
+
+        function updateNoteCount() {
+            const notes = getStoredNotes();
+            document.getElementById('noteCount').textContent = notes.length;
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabName) {
+            const tab1 = document.getElementById('tab1');
+            const tab2 = document.getElementById('tab2');
+            const tab1Btn = document.getElementById('tab1Btn');
+            const tab2Btn = document.getElementById('tab2Btn');
+
+            if (tabName === 'tab1') {
+                tab1.classList.remove('hidden');
+                tab2.classList.add('hidden');
+                tab1Btn.classList.add('tab-active');
+                tab2Btn.classList.remove('tab-active');
+            } else {
+                tab1.classList.add('hidden');
+                tab2.classList.remove('hidden');
+                tab2Btn.classList.add('tab-active');
+                tab1Btn.classList.remove('tab-active');
+                renderNotes();
+            }
+        }
+
+        // Form Submission Logic
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const topic = document.getElementById('inputTopic').value.trim();
+            const info = document.getElementById('inputInfo').value.trim();
+            const content = document.getElementById('inputContent').value.trim();
+
+            if (!topic || !info || !content) {
+                alert('Vui lòng điền đầy đủ tất cả các trường!');
+                return;
+            }
+
+            // Generate Random Style Type (1, 2, or 3) & Pastel Color Scheme
+            const shapes = [1, 2, 3];
+            const bgColors = ['#fef3c7', '#dbeafe', '#dcfce7', '#fce7f3', '#f3e8ff', '#fff7ed'];
+            
+            const newNote = {
+                id: Date.now().toString(),
+                topic: topic,
+                info: info,
+                content: content,
+                shapeType: shapes[Math.floor(Math.random() * shapes.length)],
+                bgColor: bgColors[Math.floor(Math.random() * bgColors.length)],
+                createdAt: new Date().toLocaleDateString('vi-VN')
+            };
+
+            const notes = getStoredNotes();
+            notes.unshift(newNote); // Add to top
+            saveNotes(notes);
+
+            // Reset Form
+            document.getElementById('noteForm').reset();
+
+            // Auto Switch to Tab 2
+            switchTab('tab2');
+        }
+
+        // Delete Note Handler
+        function deleteNote(id, event) {
+            event.stopPropagation(); // Prevent opening modal
+            if (confirm('Bạn có chắc chắn muốn xóa ghi chú này không?')) {
+                let notes = getStoredNotes();
+                notes = notes.filter(n => n.id !== id);
+                saveNotes(notes);
+                renderNotes();
+            }
+        }
+
+        // Render Notes List in Tab 2
+        function renderNotes() {
+            const notes = getStoredNotes();
+            const container = document.getElementById('notesContainer');
+            const emptyMessage = document.getElementById('emptyMessage');
+
+            container.innerHTML = '';
+
+            if (notes.length === 0) {
+                emptyMessage.classList.remove('hidden');
+                return;
+            } else {
+                emptyMessage.classList.add('hidden');
+            }
+
+            notes.forEach((note) => {
+                const noteElement = createNoteElement(note);
+                container.appendChild(noteElement);
+            });
+        }
+
+        // Generate HTML Element for Individual Note based on its Shape Type
+        function createNoteElement(note) {
+            const card = document.createElement('div');
+            card.onclick = () => openModal(note);
+            card.className = "cursor-pointer group relative transition-transform duration-200 hover:scale-105 hover:z-10";
+
+            // Common Delete Button
+            const deleteBtnHTML = `
+                <button onclick="deleteNote('${note.id}', event)" title="Xóa ghi chú" 
+                    class="absolute top-2 right-2 opacity-80 hover:opacity-100 bg-red-500 text-white w-7 h-7 rounded-full border border-black flex items-center justify-center text-xs font-bold shadow hover:bg-red-600 transition-colors z-20">
+                    ✕
+                </button>
+            `;
+
+            if (note.shapeType === 1) {
+                // Dạng 1: Khung hình chữ nhật có lò xò ở trên
+                card.innerHTML = `
+                    <div class="doodle-box p-5 pt-8 relative min-h-[220px] flex flex-col justify-between" style="background-color: ${note.bgColor}">
+                        <!-- Top Spiral Header -->
+                        <div class="absolute -top-3 left-0 right-0 flex justify-center gap-3">
+                            <div class="w-2.5 h-6 bg-gray-800 border border-black rounded-full"></div>
+                            <div class="w-2.5 h-6 bg-gray-800 border border-black rounded-full"></div>
+                            <div class="w-2.5 h-6 bg-gray-800 border border-black rounded-full"></div>
+                            <div class="w-2.5 h-6 bg-gray-800 border border-black rounded-full"></div>
+                            <div class="w-2.5 h-6 bg-gray-800 border border-black rounded-full"></div>
+                        </div>
+                        ${deleteBtnHTML}
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 font-mono block mb-1">📋 Chữ nhật Lò Xo</span>
+                            <h3 class="font-bold text-xl text-gray-900 border-b border-black/20 pb-1 mb-2 line-clamp-1">${escapeHTML(note.topic)}</h3>
+                            <p class="font-handwriting text-2xl text-gray-800 line-clamp-3 leading-tight">${escapeHTML(note.content)}</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-dashed border-black/20 text-xs font-semibold text-gray-600 truncate">
+                            👤 ${escapeHTML(note.info)}
+                        </div>
+                    </div>
+                `;
+            } else if (note.shapeType === 2) {
+                // Dạng 2: Khung hình tròn (hoặc oval bo góc tròn) có ghim đen ở mép
+                card.innerHTML = `
+                    <div class="doodle-box p-6 relative min-h-[220px] flex flex-col justify-between rounded-full text-center items-center justify-center aspect-square" style="background-color: ${note.bgColor}">
+                        <!-- Black Pin on Top Center -->
+                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-6 bg-black rounded-full border-2 border-white shadow-md z-10 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                        ${deleteBtnHTML}
+                        <div class="w-full px-2 mt-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 font-mono block mb-1">📍 Note Ghim Tròn</span>
+                            <h3 class="font-bold text-lg text-gray-900 border-b border-black/20 pb-1 mb-2 line-clamp-1">${escapeHTML(note.topic)}</h3>
+                            <p class="font-handwriting text-2xl text-gray-800 line-clamp-2 leading-tight">${escapeHTML(note.content)}</p>
+                        </div>
+                        <div class="w-full text-xs font-semibold text-gray-600 truncate px-4 mb-2">
+                            👤 ${escapeHTML(note.info)}
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Dạng 3: Khung hình vuông hơi nghiêng nhẹ (rotate -2deg hoặc 3deg)
+                const rotateDeg = Math.random() > 0.5 ? 'rotate(2deg)' : 'rotate(-2deg)';
+                card.innerHTML = `
+                    <div class="doodle-box p-5 relative min-h-[220px] flex flex-col justify-between aspect-square" style="background-color: ${note.bgColor}; transform: ${rotateDeg};">
+                        <!-- Washi Tape decoration -->
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 bg-yellow-200/80 border border-black/30 transform -rotate-2 shadow-sm"></div>
+                        ${deleteBtnHTML}
+                        <div class="mt-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 font-mono block mb-1">📌 Vuông Nghiêng</span>
+                            <h3 class="font-bold text-xl text-gray-900 border-b border-black/20 pb-1 mb-2 line-clamp-1">${escapeHTML(note.topic)}</h3>
+                            <p class="font-handwriting text-2xl text-gray-800 line-clamp-3 leading-tight">${escapeHTML(note.content)}</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-dashed border-black/20 text-xs font-semibold text-gray-600 truncate">
+                            👤 ${escapeHTML(note.info)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return card;
+        }
+
+        // Modal Open / Close Logic
+        function openModal(note) {
+            document.getElementById('modalTopic').textContent = note.topic;
+            document.getElementById('modalInfo').textContent = '👤 Thông tin: ' + note.info + ' | 📅 Ngày tạo: ' + note.createdAt;
+            document.getElementById('modalContent').textContent = note.content;
+            
+            const shapeNames = { 1: 'Dạng 1: Chữ nhật lò xò', 2: 'Dạng 2: Khung tròn ghim', 3: 'Dạng 3: Vuông nghiêng' };
+            document.getElementById('modalTypeBadge').textContent = shapeNames[note.shapeType] || 'Lời Cảm Tạ';
+
+            document.getElementById('noteModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('noteModal').classList.add('hidden');
+        }
+
+        // Helper: Escape HTML string for security
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
+        // Close modal when clicking outside content box
+        window.onclick = function(event) {
+            const modal = document.getElementById('noteModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Initialize App on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNoteCount();
+        });
+    </script>
+</body>
+</html>
