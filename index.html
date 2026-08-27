@@ -6,14 +6,10 @@
     <title>Bảng Ghi Chú Lời Cảm Tạ</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Permanent Marker, Caveat, Gochi Hand, Inter -->
+    <!-- Google Fonts Hỗ Trợ Tiếng Việt 100% -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Gochi+Hand&family=Inter:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <!-- Nhúng Google Fonts hỗ trợ Tiếng Việt -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Itim&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Dancing+Script:wght@700&family=Itim&family=Mali:wght@600;700&family=Pacifico&family=Patrick+Hand&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -25,15 +21,16 @@
         }
 
         .font-handwriting {
-            font-family: 'Caveat', cursive;
+            font-family: 'Pacifico', cursive;
         }
 
         .font-title {
-            font-family: 'Permanent Marker', cursive;
+            font-family: 'Mali', cursive;
+            font-weight: 700;
         }
 
         .font-doodle {
-            font-family: 'Gochi Hand', cursive;
+            font-family: 'Patrick Hand', cursive;
         }
 
         /* Doodle / Hand-drawn Style Rules */
@@ -159,9 +156,11 @@
 
     <!-- Header & Navigation Tabs -->
     <header class="w-full max-w-4xl mb-8 text-center">
-        <h1 class="text-4xl md:text-5xl font-extrabold tracking-wide mb-6 font-title text-gray-900 drop-shadow">
-            ✨ BẢNG GHI CHÚ LỜI CẢM TẠ ✨
-        </h1>
+        <h1 class="font-title text-2xl sm:text-3xl md:text-4xl flex items-center justify-center gap-2 whitespace-nowrap mb-6 md:mb-8">
+    <span>✨</span>
+    <span>BẢNG GHI CHÚ LỜI CẢM TẠ</span>
+    <span>✨</span>
+</h1>
         
         <!-- Tab Navigation -->
         <div class="flex justify-center gap-4 md:gap-6">
@@ -171,7 +170,7 @@
             </button>
             <button id="tab2Btn" onclick="switchTab('tab2')" 
                 class="doodle-btn px-6 py-3 font-bold text-lg rounded-xl bg-white text-gray-900 cursor-pointer">
-                📌 Xem Bảng Ghi Chú (<span id="noteCount">0</span>)
+                📌 Xem Bảng Ghi Chú 
             </button>
         </div>
     </header>
@@ -217,7 +216,7 @@
                             <label class="block text-sm font-bold text-gray-800 mb-1 uppercase tracking-wide">
                                 2. Thông tin (Người gửi / Thời gian ) <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" id="inputInfo" required placeholder="Ví dụ: Gia Huy | Ngày 20/11/2026" 
+                            <input type="text" id="inputInfo" required placeholder="Ví dụ: Nguyễn Văn A | Ngày 13/10/2026" 
                                 class="doodle-input w-full p-3 rounded-lg text-gray-800 text-base bg-blue-50 focus:bg-white">
                         </div>
 
