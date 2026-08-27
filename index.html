@@ -115,7 +115,7 @@
             border-radius: 4px;
         }
     </style>
-<!-- ================= FIREBASE SDK & CONFIG ================= -->
+    <!-- ================= FIREBASE SDK & CONFIG ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
@@ -130,7 +130,6 @@
             serverTimestamp 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // Thêm thông số project Firebase của bạn
         const firebaseConfig = {
             apiKey: "AIzaSyAW5cNe35FTC5XheCaea5hwn4x43Hfbceg",
             authDomain: "web-75988.firebaseapp.com",
@@ -141,12 +140,10 @@
             measurementId: "G-CGDQ109FV2"
         };
 
-        // Khởi tạo Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const notesRef = collection(db, "notes");
 
-        // Đưa các hàm Firebase ra tầm vực toàn cục (global) để gọi từ HTML/JS bên dưới
         window.db = db;
         window.notesRef = notesRef;
         window.fbTools = { addDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp };
@@ -157,10 +154,10 @@
     <!-- Header & Navigation Tabs -->
     <header class="w-full max-w-4xl mb-8 text-center">
         <h1 class="font-title text-2xl sm:text-3xl md:text-4xl flex items-center justify-center gap-2 whitespace-nowrap mb-6 md:mb-8">
-    <span>✨</span>
-    <span>BẢNG GHI CHÚ LỜI CẢM TẠ</span>
-    <span>✨</span>
-</h1>
+            <span>✨</span>
+            <span>BẢNG GHI CHÚ LỜI CẢM TẠ</span>
+            <span>✨</span>
+        </h1>
         
         <!-- Tab Navigation -->
         <div class="flex justify-center gap-4 md:gap-6">
@@ -170,7 +167,7 @@
             </button>
             <button id="tab2Btn" onclick="switchTab('tab2')" 
                 class="doodle-btn px-6 py-3 font-bold text-lg rounded-xl bg-white text-gray-900 cursor-pointer">
-                📌 Xem Bảng Ghi Chú 
+                📌 Xem Bảng Ghi Chú (<span id="noteCount">0</span>)
             </button>
         </div>
     </header>
@@ -214,13 +211,13 @@
                         <!-- Ô 2: Thông tin -->
                         <div>
                             <label class="block text-sm font-bold text-gray-800 mb-1 uppercase tracking-wide">
-                                2. Thông tin (Người gửi / Thời gian ) <span class="text-red-500">*</span>
+                                2. Thông tin (Người gửi / Thời gian) <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="inputInfo" required placeholder="Ví dụ: Nguyễn Văn A | Ngày 13/10/2026" 
                                 class="doodle-input w-full p-3 rounded-lg text-gray-800 text-base bg-blue-50 focus:bg-white">
                         </div>
 
-                        <!-- Ô 3: Câu mở rộng -->
+                        <!-- Ô 3: Lời cảm tạ -->
                         <div>
                             <label class="block text-sm font-bold text-gray-800 mb-1 uppercase tracking-wide">
                                 3. Lời cảm tạ <span class="text-red-500">*</span>
@@ -243,10 +240,8 @@
 
         <!-- ================= TAB 2: BẢNG TRƯNG BÀY ================= -->
         <section id="tab2" class="hidden">
-            <!-- Khung Bảng Trưng Bày -->
             <div class="doodle-box bg-amber-50/80 p-6 md:p-8 min-h-[500px] relative rounded-2xl border-4">
                 
-                <!-- Tiêu đề Lớn Giữa Bảng -->
                 <div class="text-center mb-10 pb-4 border-b-2 border-black/20">
                     <h2 class="text-5xl md:text-6xl font-extrabold text-amber-950 font-handwriting drop-shadow-sm inline-block px-6 py-2 bg-yellow-200/60 rounded-full border-2 border-black/80">
                         💌 Lời Cảm Tạ 💌
@@ -273,13 +268,11 @@
 
     <!-- ================= POPUP / MODAL CHI TIẾT GHI CHÚ ================= -->
     <div id="noteModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="doodle-box bg-white w-full max-w-lg p-6 md:p-8 relative rounded-2xl animate-fade-in my-auto">
-            <!-- Nút đóng -->
+        <div class="doodle-box bg-white w-full max-w-lg p-6 md:p-8 relative rounded-2xl my-auto">
             <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 border-2 border-black rounded-full font-bold text-xl hover:bg-red-500 hover:text-white transition-colors">
                 ✕
             </button>
 
-            <!-- Tiêu đề modal -->
             <div class="mb-4 pr-8">
                 <span id="modalTypeBadge" class="text-xs font-bold px-3 py-1 bg-yellow-300 border border-black rounded-full uppercase">
                     Chi tiết Lời Cảm Tạ
@@ -287,18 +280,15 @@
                 <h3 id="modalTopic" class="text-2xl font-extrabold text-gray-900 mt-2 leading-tight"></h3>
             </div>
 
-            <!-- Thông tin người gửi -->
             <div id="modalInfo" class="text-sm font-semibold text-gray-600 bg-gray-100 p-2.5 rounded-lg border border-gray-300 mb-5 font-mono">
             </div>
 
-            <!-- Câu mở rộng (Nội dung) -->
             <div class="border-t-2 border-black/10 pt-4 mb-6">
                 <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Nội dung chi tiết:</label>
                 <div id="modalContent" class="font-handwriting text-3xl text-gray-800 leading-relaxed whitespace-pre-wrap max-h-[300px] overflow-y-auto pr-2">
                 </div>
             </div>
 
-            <!-- Action footer -->
             <div class="flex justify-end gap-3 pt-2 border-t border-gray-200">
                 <button onclick="closeModal()" class="doodle-btn px-5 py-2 bg-gray-200 font-bold rounded-lg hover:bg-gray-300">
                     Đóng
@@ -309,25 +299,6 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        // Storage Key
-        const STORAGE_KEY = 'thanks_notes_db';
-
-        // Local Storage Helper
-        function getStoredNotes() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : [];
-        }
-
-        function saveNotes(notes) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-            updateNoteCount();
-        }
-
-        function updateNoteCount() {
-            const notes = getStoredNotes();
-            document.getElementById('noteCount').textContent = notes.length;
-        }
-
         // Tab Switching Logic
         function switchTab(tabName) {
             const tab1 = document.getElementById('tab1');
@@ -345,12 +316,11 @@
                 tab2.classList.remove('hidden');
                 tab2Btn.classList.add('tab-active');
                 tab1Btn.classList.remove('tab-active');
-                renderNotes();
             }
         }
 
-        // Form Submission Logic
-        function handleFormSubmit(event) {
+        // Form Submission Logic (Lưu Firebase + Chuyển Tab)
+        async function handleFormSubmit(event) {
             event.preventDefault();
 
             const topic = document.getElementById('inputTopic').value.trim();
@@ -362,97 +332,50 @@
                 return;
             }
 
-            // Generate Random Style Type (1, 2, or 3) & Pastel Color Scheme
             const shapes = [1, 2, 3];
             const bgColors = ['#fef3c7', '#dbeafe', '#dcfce7', '#fce7f3', '#f3e8ff', '#fff7ed'];
             
-            // Form Submission Logic
-async function handleFormSubmit(event) {
-    event.preventDefault();
+            try {
+                // Lưu dữ liệu trực tiếp lên Firebase Cloud
+                await window.fbTools.addDoc(window.notesRef, {
+                    topic: topic,
+                    info: info,
+                    content: content,
+                    shapeType: shapes[Math.floor(Math.random() * shapes.length)],
+                    bgColor: bgColors[Math.floor(Math.random() * bgColors.length)],
+                    createdAt: window.fbTools.serverTimestamp()
+                });
 
-    const topic = document.getElementById('inputTopic').value.trim();
-    const info = document.getElementById('inputInfo').value.trim();
-    const content = document.getElementById('inputContent').value.trim();
+                // Reset Form
+                document.getElementById('noteForm').reset();
 
-    if (!topic || !info || !content) {
-        alert('Vui lòng điền đầy đủ tất cả các trường!');
-        return;
-    }
-
-    const shapes = [1, 2, 3];
-    const bgColors = ['#fef3c7', '#dbeafe', '#dcfce7', '#fce7f3', '#f3e8ff', '#fff7ed'];
-    
-    try {
-        // Lưu dữ liệu trực tiếp lên Firebase Cloud
-        await window.fbTools.addDoc(window.notesRef, {
-            topic: topic,
-            info: info,
-            content: content,
-            shapeType: shapes[Math.floor(Math.random() * shapes.length)],
-            bgColor: bgColors[Math.floor(Math.random() * bgColors.length)],
-            createdAt: window.fbTools.serverTimestamp()
-        });
-
-        // Reset Form
-        document.getElementById('noteForm').reset();
-
-        // Tự động chuyển qua Tab 2 để xem ghi chú vừa tạo
-        switchTab('tab2');
-    } catch (error) {
-        console.error("Lỗi khi gửi lên Firebase:", error);
-        alert("Có lỗi xảy ra, không thể gửi lời cảm tạ!");
-    }
-}
-
-            // Reset Form
-            document.getElementById('noteForm').reset();
-
-            // Auto Switch to Tab 2
-            switchTab('tab2');
-        }
-
-        // Delete Note Handler
-        // Delete Note Handler
-async function deleteNote(id, event) {
-    event.stopPropagation(); // Ngăn mở Modal
-    if (confirm('Bạn có chắc chắn muốn xóa lời cảm tạ này không?')) {
-        try {
-            // Xóa document trên Firebase theo id
-            await window.fbTools.deleteDoc(window.fbTools.doc(window.db, "notes", id));
-        } catch (error) {
-            console.error("Lỗi khi xóa ghi chú:", error);
-            alert("Không thể xóa ghi chú này!");
-        }
-    }
-}
-        // Render Notes List in Tab 2
-        function renderNotes() {
-            const notes = getStoredNotes();
-            const container = document.getElementById('notesContainer');
-            const emptyMessage = document.getElementById('emptyMessage');
-
-            container.innerHTML = '';
-
-            if (notes.length === 0) {
-                emptyMessage.classList.remove('hidden');
-                return;
-            } else {
-                emptyMessage.classList.add('hidden');
+                // Tự động chuyển sang Tab 2 để xem ghi chú vừa đăng
+                switchTab('tab2');
+            } catch (error) {
+                console.error("Lỗi khi gửi lên Firebase:", error);
+                alert("Có lỗi xảy ra, không thể gửi lời cảm tạ!");
             }
-
-            notes.forEach((note) => {
-                const noteElement = createNoteElement(note);
-                container.appendChild(noteElement);
-            });
         }
 
-        // Generate HTML Element for Individual Note based on its Shape Type
+        // Delete Note Handler
+        async function deleteNote(id, event) {
+            event.stopPropagation(); // Ngăn mở Modal
+            if (confirm('Bạn có chắc chắn muốn xóa lời cảm tạ này không?')) {
+                try {
+                    await window.fbTools.deleteDoc(window.fbTools.doc(window.db, "notes", id));
+                } catch (error) {
+                    console.error("Lỗi khi xóa ghi chú:", error);
+                    alert("Không thể xóa ghi chú này!");
+                }
+            }
+        }
+
+        // Generate HTML Element for Individual Note
         function createNoteElement(note) {
             const card = document.createElement('div');
             card.onclick = () => openModal(note);
             card.className = "cursor-pointer group relative transition-transform duration-200 hover:scale-105 hover:z-10";
 
-            // Common Delete Button
             const deleteBtnHTML = `
                 <button onclick="deleteNote('${note.id}', event)" title="Xóa ghi chú" 
                     class="absolute top-2 right-2 opacity-80 hover:opacity-100 bg-red-500 text-white w-7 h-7 rounded-full border border-black flex items-center justify-center text-xs font-bold shadow hover:bg-red-600 transition-colors z-20">
@@ -461,10 +384,8 @@ async function deleteNote(id, event) {
             `;
 
             if (note.shapeType === 1) {
-                // Dạng 1: Khung hình chữ nhật có lò xò ở trên
                 card.innerHTML = `
                     <div class="doodle-box p-5 pt-8 relative min-h-[220px] flex flex-col justify-between" style="background-color: ${note.bgColor}">
-                        <!-- Top Spiral Header -->
                         <div class="absolute -top-3 left-0 right-0 flex justify-center gap-3">
                             <div class="w-2.5 h-6 bg-gray-800 border border-black rounded-full"></div>
                             <div class="w-2.5 h-6 bg-gray-800 border border-black rounded-full"></div>
@@ -474,7 +395,6 @@ async function deleteNote(id, event) {
                         </div>
                         ${deleteBtnHTML}
                         <div>
-                            
                             <h3 class="font-bold text-xl text-gray-900 border-b border-black/20 pb-1 mb-2 line-clamp-1">${escapeHTML(note.topic)}</h3>
                             <p class="font-handwriting text-2xl text-gray-800 line-clamp-3 leading-tight">${escapeHTML(note.content)}</p>
                         </div>
@@ -484,16 +404,13 @@ async function deleteNote(id, event) {
                     </div>
                 `;
             } else if (note.shapeType === 2) {
-                // Dạng 2: Khung hình tròn (hoặc oval bo góc tròn) có ghim đen ở mép
                 card.innerHTML = `
                     <div class="doodle-box p-6 relative min-h-[220px] flex flex-col justify-between rounded-full text-center items-center justify-center aspect-square" style="background-color: ${note.bgColor}">
-                        <!-- Black Pin on Top Center -->
                         <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-6 bg-black rounded-full border-2 border-white shadow-md z-10 flex items-center justify-center">
                             <div class="w-2 h-2 bg-white rounded-full"></div>
                         </div>
                         ${deleteBtnHTML}
                         <div class="w-full px-2 mt-2">
-                            
                             <h3 class="font-bold text-lg text-gray-900 border-b border-black/20 pb-1 mb-2 line-clamp-1">${escapeHTML(note.topic)}</h3>
                             <p class="font-handwriting text-2xl text-gray-800 line-clamp-2 leading-tight">${escapeHTML(note.content)}</p>
                         </div>
@@ -503,15 +420,12 @@ async function deleteNote(id, event) {
                     </div>
                 `;
             } else {
-                // Dạng 3: Khung hình vuông hơi nghiêng nhẹ (rotate -2deg hoặc 3deg)
                 const rotateDeg = Math.random() > 0.5 ? 'rotate(2deg)' : 'rotate(-2deg)';
                 card.innerHTML = `
                     <div class="doodle-box p-5 relative min-h-[220px] flex flex-col justify-between aspect-square" style="background-color: ${note.bgColor}; transform: ${rotateDeg};">
-                        <!-- Washi Tape decoration -->
                         <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 bg-yellow-200/80 border border-black/30 transform -rotate-2 shadow-sm"></div>
                         ${deleteBtnHTML}
                         <div class="mt-2">
-                            
                             <h3 class="font-bold text-xl text-gray-900 border-b border-black/20 pb-1 mb-2 line-clamp-1">${escapeHTML(note.topic)}</h3>
                             <p class="font-handwriting text-2xl text-gray-800 line-clamp-3 leading-tight">${escapeHTML(note.content)}</p>
                         </div>
@@ -541,9 +455,9 @@ async function deleteNote(id, event) {
             document.getElementById('noteModal').classList.add('hidden');
         }
 
-        // Helper: Escape HTML string for security
+        // Helper: Escape HTML string
         function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
+            return str ? str.replace(/[&<>'"]/g, 
                 tag => ({
                     '&': '&amp;',
                     '<': '&lt;',
@@ -551,10 +465,9 @@ async function deleteNote(id, event) {
                     "'": '&#39;',
                     '"': '&quot;'
                 }[tag] || tag)
-            );
+            ) : '';
         }
 
-        // Close modal when clicking outside content box
         window.onclick = function(event) {
             const modal = document.getElementById('noteModal');
             if (event.target === modal) {
@@ -562,52 +475,49 @@ async function deleteNote(id, event) {
             }
         };
 
-        // Tự động đồng bộ dữ liệu Realtime từ Firebase về giao diện
-document.addEventListener('DOMContentLoaded', () => {
-    // Tạo truy vấn sắp xếp ghi chú mới nhất lên đầu
-    const q = window.fbTools.query(window.notesRef, window.fbTools.orderBy("createdAt", "desc"));
+        // Realtime Listener từ Firebase
+        document.addEventListener('DOMContentLoaded', () => {
+            const q = window.fbTools.query(window.notesRef, window.fbTools.orderBy("createdAt", "desc"));
 
-    // Lắng nghe sự thay đổi dữ liệu từ Firebase
-    window.fbTools.onSnapshot(q, (snapshot) => {
-        const notes = [];
-        snapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            // Xử lý định dạng ngày tháng từ serverTimestamp
-            const dateObj = data.createdAt ? data.createdAt.toDate() : new Date();
-            const formattedDate = dateObj.toLocaleDateString('vi-VN');
+            window.fbTools.onSnapshot(q, (snapshot) => {
+                const notes = [];
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const dateObj = data.createdAt ? data.createdAt.toDate() : new Date();
+                    const formattedDate = dateObj.toLocaleDateString('vi-VN');
 
-            notes.push({
-                id: docSnap.id,
-                ...data,
-                createdAt: formattedDate
+                    notes.push({
+                        id: docSnap.id,
+                        ...data,
+                        createdAt: formattedDate
+                    });
+                });
+
+                // Cập nhật số lượng trên Tab
+                const countElem = document.getElementById('noteCount');
+                if (countElem) countElem.textContent = notes.length;
+
+                // Render ghi chú
+                renderNotesFromFirebase(notes);
             });
         });
 
-        // Cập nhật số lượng ghi chú trên Tab Button
-        document.getElementById('noteCount').textContent = notes.length;
+        function renderNotesFromFirebase(notes) {
+            const container = document.getElementById('notesContainer');
+            const emptyMessage = document.getElementById('emptyMessage');
 
-        // Render các thẻ ghi chú ra giao diện Tab 2
-        renderNotesFromFirebase(notes);
-    });
-});
+            container.innerHTML = '';
 
-// Hàm hiển thị danh sách note từ Firebase
-function renderNotesFromFirebase(notes) {
-    const container = document.getElementById('notesContainer');
-    const emptyMessage = document.getElementById('emptyMessage');
-
-    container.innerHTML = '';
-
-    if (notes.length === 0) {
-        emptyMessage.classList.remove('hidden');
-    } else {
-        emptyMessage.classList.add('hidden');
-        notes.forEach((note) => {
-            const noteElement = createNoteElement(note);
-            container.appendChild(noteElement);
-        });
-    }
-}
+            if (notes.length === 0) {
+                emptyMessage.classList.remove('hidden');
+            } else {
+                emptyMessage.classList.add('hidden');
+                notes.forEach((note) => {
+                    const noteElement = createNoteElement(note);
+                    container.appendChild(noteElement);
+                });
+            }
+        }
     </script>
 </body>
 </html>
