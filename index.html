@@ -118,16 +118,16 @@
     <!-- ================= FIREBASE SDK & CONFIG ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { 
-            getFirestore, 
-            collection, 
-            addDoc, 
-            deleteDoc, 
-            doc, 
-            onSnapshot, 
-            query, 
-            orderBy, 
-            serverTimestamp 
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            deleteDoc,
+            doc,
+            onSnapshot,
+            query,
+            orderBy,
+            serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -151,21 +151,30 @@
 </head>
 <body class="p-4 md:p-8 flex flex-col items-center">
 
-    <!-- Header & Navigation Tabs -->
-    <header class="w-full max-w-4xl mb-8 text-center">
-        <h1 class="font-title text-2xl sm:text-3xl md:text-4xl flex items-center justify-center gap-2 whitespace-nowrap mb-6 md:mb-8">
-            <span>✨</span>
-            <span>BẢNG GHI CHÚ LỜI CẢM TẠ</span>
-            <span>✨</span>
-        </h1>
+ <!-- Header & Navigation Tabs -->
+    <header class="w-full max-w-4xl mb-6 text-center flex flex-col items-center">
+        <!-- DÒNG 1: LỄ CẢM TẠ BAN THIẾU NIÊN -->
+        <div class="doodle-btn bg-red-700 text-white font-bold text-sm sm:text-base tracking-wide uppercase px-5 py-1.5 rounded-full mb-4 shadow-sm border-2 border-black inline-block">
+            Lễ Cảm Tạ Ban Thiếu Niên Tuy Lý Vương 36 Năm <span class="text-yellow-300 font-extrabold">(1990 - 2026)</span>
+        </div>
+
+        <!-- DÒNG 2: CHỦ ĐỀ -->
+        <div class="doodle-box bg-white border-3 border-black px-8 py-4 rounded-2xl inline-block mb-6 shadow-[6px_6px_0px_#1a1a1a] transform hover:-translate-y-1 transition-transform text-center">
+            <span class="block text-amber-900 font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-wider uppercase font-title mb-1">
+                CHỦ ĐỀ: Ê-BÊN-Ê-XE
+            </span>
+            <span class="block text-amber-800 font-extrabold text-xl sm:text-2xl md:text-3xl tracking-wider uppercase font-title">
+                "VẦNG ĐÁ CỨU GIÚP"
+            </span>
+        </div>
         
-        <!-- Tab Navigation -->
+        <!-- TAB NAVIGATION -->
         <div class="flex justify-center gap-4 md:gap-6">
-            <button id="tab1Btn" onclick="switchTab('tab1')" 
+            <button id="tab1Btn" onclick="switchTab('tab1')"
                 class="doodle-btn px-6 py-3 font-bold text-lg rounded-xl bg-white text-gray-900 cursor-pointer tab-active">
                 ✏️ Nhập Văn Bản
             </button>
-            <button id="tab2Btn" onclick="switchTab('tab2')" 
+            <button id="tab2Btn" onclick="switchTab('tab2')"
                 class="doodle-btn px-6 py-3 font-bold text-lg rounded-xl bg-white text-gray-900 cursor-pointer">
                 📌 Xem Bảng Ghi Chú (<span id="noteCount">0</span>)
             </button>
@@ -175,10 +184,10 @@
     <!-- MAIN CONTENT AREA -->
     <main class="w-full max-w-4xl">
 
-        <!-- ================= TAB 1: FORM NHẬP VĂN BẢN ================= -->
+<!-- ================= TAB 1: FORM NHẬP VĂN BẢN ================= -->
         <section id="tab1" class="block">
             <div class="relative mx-auto max-w-2xl mt-6">
-                <!-- Sổ Tay Lò Xo -->
+                <!-- Các vòng lò xo (Giữ nguyên) -->
                 <div class="spiral-holes">
                     <div class="spiral-ring"></div>
                     <div class="spiral-ring"></div>
@@ -193,42 +202,44 @@
                 </div>
 
                 <div class="doodle-box spiral-notebook bg-white p-6 md:p-10 relative">
-                    <div class="border-b-2 border-dashed border-gray-300 pb-3 mb-6 flex justify-between items-center">
-                        <span class="text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Trang Ghi Chú Mới</span>
-                        <span class="text-sm font-semibold text-gray-400 font-doodle">🎨</span>
-                    </div>
 
-                    <form id="noteForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
-                        <!-- Ô 1: Chủ đề -->
-                        <div>
-                            <label class="block text-sm font-bold text-gray-800 mb-1 uppercase tracking-wide">
-                                1. Chủ đề <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="inputTopic" required placeholder="Ví dụ: Lời Cảm Ơn Thầy Cô, Tri Ân Cha Mẹ..." 
-                                class="doodle-input w-full p-3 rounded-lg text-gray-800 font-semibold text-base bg-yellow-50 focus:bg-white">
+                    <!-- 🔴 DÁN ĐOẠN CODE CĂN GIỮA VÀO ĐÂY 🔴 -->
+                    <div class="border-b-2 border-dashed border-gray-300 pb-4 mb-6 flex justify-center items-center relative">
+                        <div class="bg-yellow-200/90 border-2 border-black px-6 py-2 rounded-xl shadow-[3px_3px_0px_#000] transform -rotate-1">
+                            <span class="font-title text-base sm:text-lg font-extrabold text-gray-900 flex items-center gap-2 uppercase tracking-wide">
+                                <span>✨</span>
+                                <span>Bảng Ghi Chú Lời Cảm Tạ</span>
+                                <span>✨</span>
+                            </span>
                         </div>
+                        <!-- Icon khay màu nằm ở góc phải -->
+                        <span class="text-xl font-doodle absolute right-0">🎨</span>
+                    </div>
+                    <!-- --------------------------------------- -->
 
-                        <!-- Ô 2: Thông tin -->
+                    <!-- Form nhập nội dung (Giữ nguyên) -->
+                    <form id="noteForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
+                        <!-- 1. Thông tin -->
                         <div>
                             <label class="block text-sm font-bold text-gray-800 mb-1 uppercase tracking-wide">
-                                2. Thông tin (Người gửi / Thời gian) <span class="text-red-500">*</span>
+                                1. THÔNG TIN (NGƯỜI GỬI / THỜI GIAN) <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" id="inputInfo" required placeholder="Ví dụ: Nguyễn Văn A | Ngày 13/10/2026" 
+                            <input type="text" id="inputInfo" required placeholder="Ví dụ: Nguyễn Văn A | Ngày 13/10/2026"
                                 class="doodle-input w-full p-3 rounded-lg text-gray-800 text-base bg-blue-50 focus:bg-white">
                         </div>
 
-                        <!-- Ô 3: Lời cảm tạ -->
+                        <!-- 2. Lời cảm tạ -->
                         <div>
                             <label class="block text-sm font-bold text-gray-800 mb-1 uppercase tracking-wide">
-                                3. Lời cảm tạ <span class="text-red-500">*</span>
+                                2. LỜI CẢM TẠ <span class="text-red-500">*</span>
                             </label>
-                            <textarea id="inputContent" required rows="5" placeholder="Nhập suy nghĩ, tình cảm và lời tri ân sâu sắc nhất của bạn vào đây..." 
+                            <textarea id="inputContent" required rows="5" placeholder="Nhập lời cảm tạ Chúa về 1 điều gì về ban thiếu niên..."
                                 class="doodle-input w-full p-3 rounded-lg text-gray-800 text-base bg-green-50 focus:bg-white font-handwriting text-2xl leading-relaxed"></textarea>
                         </div>
 
-                        <!-- Button Đăng Lên Bảng -->
+                        <!-- Nút Đăng -->
                         <div class="pt-4 text-center">
-                            <button type="submit" 
+                            <button type="submit"
                                 class="doodle-btn w-full md:w-auto px-10 py-4 bg-black text-white font-bold text-xl rounded-xl cursor-pointer hover:bg-gray-800">
                                 🚀 Đăng Lên Bảng Trưng Bày
                             </button>
@@ -277,7 +288,6 @@
                 <span id="modalTypeBadge" class="text-xs font-bold px-3 py-1 bg-yellow-300 border border-black rounded-full uppercase">
                     Chi tiết Lời Cảm Tạ
                 </span>
-                <h3 id="modalTopic" class="text-2xl font-extrabold text-gray-900 mt-2 leading-tight"></h3>
             </div>
 
             <div id="modalInfo" class="text-sm font-semibold text-gray-600 bg-gray-100 p-2.5 rounded-lg border border-gray-300 mb-5 font-mono">
@@ -323,11 +333,10 @@
         async function handleFormSubmit(event) {
             event.preventDefault();
 
-            const topic = document.getElementById('inputTopic').value.trim();
             const info = document.getElementById('inputInfo').value.trim();
             const content = document.getElementById('inputContent').value.trim();
 
-            if (!topic || !info || !content) {
+            if (!info || !content) {
                 alert('Vui lòng điền đầy đủ tất cả các trường!');
                 return;
             }
@@ -338,7 +347,6 @@
             try {
                 // Lưu dữ liệu trực tiếp lên Firebase Cloud
                 await window.fbTools.addDoc(window.notesRef, {
-                    topic: topic,
                     info: info,
                     content: content,
                     shapeType: shapes[Math.floor(Math.random() * shapes.length)],
@@ -377,7 +385,7 @@ function createNoteElement(note) {
     card.className = "cursor-pointer group relative transition-transform duration-200 hover:scale-105 hover:z-10";
 
     const deleteBtnHTML = `
-        <button onclick="deleteNote('${note.id}', event)" title="Xóa ghi chú" 
+        <button onclick="deleteNote('${note.id}', event)" title="Xóa ghi chú"
             class="absolute top-2 right-2 opacity-80 hover:opacity-100 bg-red-500 text-white w-7 h-7 rounded-full border border-black flex items-center justify-center text-xs font-bold shadow hover:bg-red-600 transition-colors z-20">
             ✕
         </button>
@@ -399,8 +407,7 @@ function createNoteElement(note) {
                 </div>
                 ${deleteBtnHTML}
                 <div>
-                    <h3 class="font-bold text-xl text-gray-900 border-b border-black/20 pb-1 mb-2 line-clamp-1">${escapeHTML(note.topic)}</h3>
-                    <p class="font-handwriting text-2xl text-gray-800 line-clamp-3 leading-tight">${escapeHTML(note.content)}</p>
+                    <p class="font-handwriting text-2xl text-gray-800 line-clamp-4 leading-tight">${escapeHTML(note.content)}</p>
                 </div>
                 <div class="mt-4 pt-2 border-t border-dashed border-black/20 text-xs font-semibold text-gray-600 truncate">
                     👤 ${escapeHTML(note.info)}
@@ -416,8 +423,7 @@ function createNoteElement(note) {
                 </div>
                 ${deleteBtnHTML}
                 <div class="w-full px-2 mt-2">
-                    <h3 class="font-bold text-lg text-gray-900 border-b border-black/20 pb-1 mb-2 line-clamp-1">${escapeHTML(note.topic)}</h3>
-                    <p class="font-handwriting text-2xl text-gray-800 line-clamp-2 leading-tight">${escapeHTML(note.content)}</p>
+                    <p class="font-handwriting text-2xl text-gray-800 line-clamp-3 leading-tight">${escapeHTML(note.content)}</p>
                 </div>
                 <div class="w-full text-xs font-semibold text-gray-600 truncate px-4 mb-2">
                     👤 ${escapeHTML(note.info)}
@@ -432,8 +438,7 @@ function createNoteElement(note) {
                 <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 bg-yellow-200/80 border border-black/30 transform -rotate-2 shadow-sm"></div>
                 ${deleteBtnHTML}
                 <div class="mt-2">
-                    <h3 class="font-bold text-xl text-gray-900 border-b border-black/20 pb-1 mb-2 line-clamp-1">${escapeHTML(note.topic)}</h3>
-                    <p class="font-handwriting text-2xl text-gray-800 line-clamp-3 leading-tight">${escapeHTML(note.content)}</p>
+                    <p class="font-handwriting text-2xl text-gray-800 line-clamp-4 leading-tight">${escapeHTML(note.content)}</p>
                 </div>
                 <div class="mt-4 pt-2 border-t border-dashed border-black/20 text-xs font-semibold text-gray-600 truncate">
                     👤 ${escapeHTML(note.info)}
@@ -443,11 +448,10 @@ function createNoteElement(note) {
     }
 
     return card;
-}
+}  
 
         // Modal Open / Close Logic
         function openModal(note) {
-            document.getElementById('modalTopic').textContent = note.topic;
             document.getElementById('modalInfo').textContent = '👤 Thông tin: ' + note.info + ' | 📅 Ngày tạo: ' + note.createdAt;
             document.getElementById('modalContent').textContent = note.content;
             
@@ -463,7 +467,7 @@ function createNoteElement(note) {
 
         // Helper: Escape HTML string
         function escapeHTML(str) {
-            return str ? str.replace(/[&<>'"]/g, 
+            return str ? str.replace(/[&<>'"]/g,
                 tag => ({
                     '&': '&amp;',
                     '<': '&lt;',
